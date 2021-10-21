@@ -34,9 +34,9 @@ if __name__ == "__main__":
     for dataset in args.datasets:
         original_bag_filename = join(
             args.rosbag_folder, '{}.bag'.format(dataset))
-        reconstructed_images_folder = join(
-            args.image_folder, dataset)
-
+        # reconstructed_images_folder = join(
+            # args.image_folder, dataset)
+        reconstructed_images_folder = args.image_folder
         bridge = CvBridge()
         continue_processing = True
 
