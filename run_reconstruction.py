@@ -19,12 +19,12 @@ if __name__ == "__main__":
                         help='path to model weights')
     parser.add_argument('-i', '--input_file', required=True, type=str)
     parser.add_argument('--fixed_duration', dest='fixed_duration', action='store_true')
-    parser.set_defaults(fixed_duration=False)
+    parser.set_defaults(fixed_duration=True)
     parser.add_argument('-N', '--window_size', default=None, type=int,
                         help="Size of each event window, in number of events. Ignored if --fixed_duration=True")
     parser.add_argument('-T', '--window_duration', default=33, type=float,
                         help="Duration of each event window, in milliseconds. Ignored if --fixed_duration=False")
-    parser.add_argument('--num_events_per_pixel', default=0.1, type=float,
+    parser.add_argument('--num_events_per_pixel', default=0.3, type=float,
                         help='in case N (window size) is not specified, it will be \
                               automatically computed as N = width * height * num_events_per_pixel')
     parser.add_argument('--skipevents', default=0, type=int)

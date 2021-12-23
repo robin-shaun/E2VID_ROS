@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": "/home/robin/anaconda3/envs/E2VID/bin/python"
+    "python.pythonPath": "/home/robin/anaconda3/envs/E2VID/bin/python",
+    "files.associations": {
+        "vector": "cpp",
+        "sstream": "cpp",
+        "condition_variable": "cpp"
+    }
 }
