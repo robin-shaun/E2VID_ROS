@@ -45,7 +45,6 @@ class E2VID_ROS:
             self.socket.send_string('Hello')
             data = self.socket.recv()
             if (data == "Not ready".encode()):
-                print("Not ready")
                 continue
             self.event_array.ParseFromString(data)
             self.event_window[0,:] = np.asarray(self.event_array.timestamp)

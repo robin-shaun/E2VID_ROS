@@ -1,0 +1,18 @@
+syntax = "proto3";
+package event_array.protobuf;
+option optimize_for = SPEED;
+message Event_Array
+{
+    // message Event
+    // {
+    //     double timestamp = 1;
+    //     int32 x  = 2;
+    //     int32 y  = 3;
+    //     int32 polarity = 4; 
+    // };
+    // repeated Event event = 1;
+    repeated double timestamp = 1;
+    repeated int32 x  = 2;
+    repeated int32 y  = 3;
+    repeated int32 polarity = 4; 
+}

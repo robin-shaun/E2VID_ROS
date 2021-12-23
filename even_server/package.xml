@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <name>event_server</name>
+  <version>0.0.0</version>
+  <description>The event_server package</description>
+  <maintainer email="robin_shaun@foxmail.com">Robin Shaun</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+  <buildtool_depend>protobuf-dev</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>dvs_msgs</build_depend>
+  <build_depend>cmake_modules</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>dvs_msgs</run_depend>
+
+  <export>
+  </export>
+</package>
