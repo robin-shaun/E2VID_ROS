@@ -34,7 +34,7 @@ First run dvs_event_server
 ```bash
 roslaunch dvs_event_server dvs_event_server.launch
 ```
-And then run E2VID_ROS
+And then run E2VID_ROS (when closing, run_reconstruction_ros.py should be closed before dvs_event_server)
 
 ```bash
 python run_reconstruction_ros.py
