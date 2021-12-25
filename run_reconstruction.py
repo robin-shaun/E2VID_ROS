@@ -6,10 +6,11 @@ import pandas as pd
 from utils.event_readers import FixedSizeEventReader, FixedDurationEventReader
 from utils.inference_utils import events_to_voxel_grid, events_to_voxel_grid_pytorch
 from utils.timers import Timer
-import time
+from cv_bridge import CvBridge
 from image_reconstructor import ImageReconstructor
 from options.inference_options import set_inference_options
-
+import rospy
+from sensor_msgs.msg import Image
 
 if __name__ == "__main__":
 
@@ -19,7 +20,7 @@ if __name__ == "__main__":
                         help='path to model weights')
     parser.add_argument('-i', '--input_file', required=True, type=str)
     parser.add_argument('--fixed_duration', dest='fixed_duration', action='store_true')
-    parser.set_defaults(fixed_duration=True)
+    parser.set_defaults(fixed_duration=False)
     parser.add_argument('-N', '--window_size', default=None, type=int,
                         help="Size of each event window, in number of events. Ignored if --fixed_duration=True")
     parser.add_argument('-T', '--window_duration', default=33, type=float,
@@ -36,6 +37,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    rospy.init_node("e2vid")
+    frame_pub = rospy.Publisher("/e2vid/image", Image, queue_size=1)
+
     # Read sensor size from the first first line of the event file
     path_to_events = args.input_file
 
@@ -51,6 +55,7 @@ if __name__ == "__main__":
 
     model = model.to(device)
     model.eval()
+    bridge = CvBridge()
 
     reconstructor = ImageReconstructor(model, height, width, model.num_bins, args)
 
@@ -107,6 +112,7 @@ if __name__ == "__main__":
                                                                 device=device)
 
             num_events_in_window = event_window.shape[0]
-            reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
-
+            out = reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
+            reconstructed_image = bridge.cv2_to_imgmsg(out, encoding="passthrough")
+            frame_pub.publish(reconstructed_image)
             start_index += num_events_in_window

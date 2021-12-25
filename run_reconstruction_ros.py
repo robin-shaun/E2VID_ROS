@@ -2,7 +2,6 @@ from utils.loading_utils import load_model, get_device
 import numpy as np
 import argparse
 from utils.inference_utils import events_to_voxel_grid_pytorch
-from utils.timers import Timer
 from image_reconstructor import ImageReconstructor
 from options.inference_options import set_inference_options
 import rospy
@@ -27,7 +26,7 @@ class E2VID_ROS:
 
         context = zmq.Context()
         self.socket =  context.socket(zmq.REQ)
-        self.socket.connect('tcp://localhost:10002')
+        self.socket.connect('tcp://127.0.0.1:10001')
 
         self.bridge = CvBridge()
 
@@ -47,11 +46,12 @@ class E2VID_ROS:
             if (data == "Not ready".encode()):
                 continue
             self.event_array.ParseFromString(data)
-            self.event_window[0,:] = np.asarray(self.event_array.timestamp)
-            self.event_window[1,:] = np.asarray(self.event_array.x)
-            self.event_window[2,:] = np.asarray(self.event_array.y)
-            self.event_window[3,:] = np.asarray(self.event_array.polarity)
+            self.event_window[0,:] = np.array(list(self.event_array.timestamp))
+            self.event_window[1,:] = np.array(list(self.event_array.x))
+            self.event_window[2,:] = np.array(list(self.event_array.y))
+            self.event_window[3,:] = np.array(list(self.event_array.polarity))
             last_timestamp = self.event_window[0, -1]
+            
             event_tensor = events_to_voxel_grid_pytorch(self.event_window.transpose(),
                                                             num_bins=self.model.num_bins,
                                                             width=self.width,
@@ -62,7 +62,6 @@ class E2VID_ROS:
 
             
             out = self.reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
-            
             reconstructed_image = self.bridge.cv2_to_imgmsg(out, encoding="passthrough")
             self.frame_pub.publish(reconstructed_image)
             start_index += num_events_in_window

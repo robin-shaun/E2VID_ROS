@@ -1,3 +1,60 @@
+# E2VID_ROS
+
+## Introduce
+
+We extend [E2VID](https://github.com/uzh-rpg/rpg_e2vid) to a real-time system. Because Python ROS callback has a large delay, we use [dvs_event_server](https://github.com/robin-shaun/dvs_event_server) to transport "dvs/events" ROS topic to Python.
+
+## Install with Anaconda
+
+In addition to dependencies E2VID needs, some packages are needed. Enter the E2VID conda environment, and then 
+
+```bash
+pip install rospkg
+pip install pyzmq
+pip install protobuf
+```
+
+## Usage
+
+Adjust the event camera parameter according to your camera and surroundings in run_reconstruction_ros.py
+
+```python
+self.width = 346
+self.height = 260
+self.event_window_size = 30000
+```      
+Make sure the ip address and the port are the same as the dvs_event_server in run_reconstruction_ros.py
+
+```python
+self.socket.connect('tcp://127.0.0.1:10001')
+```
+
+First run dvs_event_server
+
+```bash
+roslaunch dvs_event_server dvs_event_server.launch
+```
+And then run E2VID_ROS
+
+```bash
+python run_reconstruction_ros.py
+```
+
+You can play the rosbag or use your own camera
+
+```bash
+rosbag play example.bag
+```
+You can use [dvs_renderer](https://github.com/uzh-rpg/rpg_dvs_ros/tree/master/dvs_renderer) or [dv_ros](https://github.com/kehanXue/dv_ros/tree/master/dv_ros) to compare the reconstructed frame with the event frame.
+
+You can use rqt_image_view or rviz to visualize the /e2vid/image topic
+
+<img src="./example.gif" width="640" height="360" />  
+
+----
+----
+----
+
 # High Speed and High Dynamic Range Video with an Event Camera
 
 [![High Speed and High Dynamic Range Video with an Event Camera](http://rpg.ifi.uzh.ch/E2VID/video_thumbnail.png)](https://youtu.be/eomALySSGVU)
