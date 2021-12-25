@@ -45,7 +45,7 @@ You can play the rosbag or use your own camera
 ```bash
 rosbag play example.bag
 ```
-You can use [dvs_renderer](https://github.com/uzh-rpg/rpg_dvs_ros/tree/master/dvs_renderer) or [dv_ros](https://github.com/kehanXue/dv_ros/tree/master/dv_ros) to compare the reconstructed frame with the event frame.
+You can use [dvs_renderer](https://github.com/uzh-rpg/rpg_dvs_ros/tree/master/dvs_renderer) or [dv_ros](https://github.com/kehanXue/dv_ros) to compare the reconstructed frame with the event frame.
 
 You can use rqt_image_view or rviz to visualize the /e2vid/image topic
 
