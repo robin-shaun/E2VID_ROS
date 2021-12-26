@@ -17,6 +17,7 @@ class E2VID_ROS:
         self.width = 346
         self.height = 260
         self.event_window_size = 30000
+        self.camera_link = "camera_link"
         self.event_window = np.ones((4, self.event_window_size))
         self.event_array = Event_Array()
         print('Sensor size: {} x {}'.format(self.width, self.height))
@@ -63,6 +64,8 @@ class E2VID_ROS:
             
             out = self.reconstructor.update_reconstruction(event_tensor, start_index + num_events_in_window, last_timestamp)
             reconstructed_image = self.bridge.cv2_to_imgmsg(out, encoding="passthrough")
+            reconstructed_image.header.stamp = rospy.Time(last_timestamp)
+            reconstructed_image.header.frame_id = self.camera_link
             self.frame_pub.publish(reconstructed_image)
             start_index += num_events_in_window
 

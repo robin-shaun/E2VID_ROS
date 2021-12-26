@@ -23,10 +23,23 @@ self.width = 346
 self.height = 260
 self.event_window_size = 30000
 ```      
-Make sure the ip address and the port are the same as the dvs_event_server in run_reconstruction_ros.py
+
+Adjust the event topic name and the event window size in dvs_event_server.launch
+
+```xml
+<param name="/event_topic_name" type="str" value="/dvs/events"/>
+<param name="/event_window_size" type="int" value="30000" />
+```
+
+Make sure the ip address and the port are the same as the dvs_event_server.launch in run_reconstruction_ros.py
 
 ```python
 self.socket.connect('tcp://127.0.0.1:10001')
+```
+
+```xml
+<param name="/ip_address" type="str" value="127.0.0.1" />
+<param name="/port" type="str" value="10001" />
 ```
 
 First run dvs_event_server
